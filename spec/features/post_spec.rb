@@ -34,7 +34,7 @@ require 'rails_helper'
       
       it 'has a scope so that only post creators can see their post' do
         
-        other_user = User.create(first_name: 'Non', last_name: 'Authorized', email: "nonauth@email.com", password: "password", password_confirmation: "password")
+        other_user = User.create(first_name: 'Non', last_name: 'Authorized', email: "nonauth@email.com", password: "password", password_confirmation: "password", phone: "5555555555")
     
         post_from_other_user = Post.create(date: Date.today, rationale: "This post shouldn't be seen", user_id: other_user.id, overtime_request: 3.5)
         
