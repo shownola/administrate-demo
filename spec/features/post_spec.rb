@@ -4,7 +4,7 @@ require 'rails_helper'
     let(:user) { FactoryGirl.create(:user) }
     
     let(:post) do
-      Post.create(date: Date.today, rationale: "Rationale", user_id: user.id, overtime_request: 3.5)
+      Post.create(date: Date.today, rationale: "Rationale", user_id: user.id, daily_hours: 3.5)
     end
     
    before do
@@ -36,7 +36,7 @@ require 'rails_helper'
         
         other_user = User.create(first_name: 'Non', last_name: 'Authorized', email: "nonauth@email.com", password: "password", password_confirmation: "password", phone: "5555555555")
     
-        post_from_other_user = Post.create(date: Date.today, rationale: "This post shouldn't be seen", user_id: other_user.id, overtime_request: 3.5)
+        post_from_other_user = Post.create(date: Date.today, rationale: "This post shouldn't be seen", user_id: other_user.id, daily_hours: 3.5)
         
         visit posts_path
         
@@ -63,7 +63,7 @@ require 'rails_helper'
         delete_user = FactoryGirl.create(:user)
         login_as(delete_user, :scope => :user)
         
-        post_to_delete = Post.create(date: Date.today, rationale: "asdf", user_id: delete_user.id, overtime_request: 3.5)
+        post_to_delete = Post.create(date: Date.today, rationale: "asdf", user_id: delete_user.id, daily_hours: 3.5)
         
         visit posts_path
         
@@ -84,7 +84,7 @@ require 'rails_helper'
       it 'can be created from new form page' do
         fill_in 'post[date]', with: Date.today
         fill_in 'post[rationale]', with: "Some rationale"
-        fill_in 'post[overtime_request]', with: 4.5
+        fill_in 'post[daily_hours]', with: 4.5
 
         expect { click_on "Save" }.to change(Post, :count).by(1)
       end
@@ -92,7 +92,7 @@ require 'rails_helper'
       it 'will have a user associated with it' do
         fill_in 'post[date]', with: Date.today
         fill_in 'post[rationale]', with: "User Association"
-        fill_in 'post[overtime_request]', with: 4.5
+        fill_in 'post[daily_hours]', with: 4.5
         click_on "Save"
         
         expect(User.last.posts.last.rationale).to eq("User Association")
