@@ -4,7 +4,7 @@ require 'rails_helper'
     let(:user) { FactoryGirl.create(:user) }
     
     let(:post) do
-      Post.create(date: Date.today, rationale: "Rationale", user_id: user.id, daily_hours: 3.5)
+      Post.create(date: Date.today, work_performed: "Work Performed", user_id: user.id, daily_hours: 3.5)
     end
     
    before do
@@ -29,14 +29,14 @@ require 'rails_helper'
         post1 = FactoryGirl.build_stubbed(:post)
         post2 = FactoryGirl.build_stubbed(:second_post)
         visit posts_path
-        expect(page).to have_content(/Rationale|content/)
+        expect(page).to have_content(/Work Performed|content/)
       end
       
       it 'has a scope so that only post creators can see their post' do
         
         other_user = User.create(first_name: 'Non', last_name: 'Authorized', email: "nonauth@email.com", password: "password", password_confirmation: "password", phone: "5555555555")
     
-        post_from_other_user = Post.create(date: Date.today, rationale: "This post shouldn't be seen", user_id: other_user.id, daily_hours: 3.5)
+        post_from_other_user = Post.create(date: Date.today, work_performed: "This post shouldn't be seen", user_id: other_user.id, daily_hours: 3.5)
         
         visit posts_path
         
@@ -63,7 +63,7 @@ require 'rails_helper'
         delete_user = FactoryGirl.create(:user)
         login_as(delete_user, :scope => :user)
         
-        post_to_delete = Post.create(date: Date.today, rationale: "asdf", user_id: delete_user.id, daily_hours: 3.5)
+        post_to_delete = Post.create(date: Date.today, work_performed: "asdf", user_id: delete_user.id, daily_hours: 3.5)
         
         visit posts_path
         
@@ -83,7 +83,7 @@ require 'rails_helper'
       
       it 'can be created from new form page' do
         fill_in 'post[date]', with: Date.today
-        fill_in 'post[rationale]', with: "Some rationale"
+        fill_in 'post[work_performed]', with: "Some work_performed"
         fill_in 'post[daily_hours]', with: 4.5
 
         expect { click_on "Save" }.to change(Post, :count).by(1)
@@ -91,11 +91,11 @@ require 'rails_helper'
       
       it 'will have a user associated with it' do
         fill_in 'post[date]', with: Date.today
-        fill_in 'post[rationale]', with: "User Association"
+        fill_in 'post[work_performed]', with: "User Association"
         fill_in 'post[daily_hours]', with: 4.5
         click_on "Save"
         
-        expect(User.last.posts.last.rationale).to eq("User Association")
+        expect(User.last.posts.last.work_performed).to eq("User Association")
       end
     end
     
@@ -104,7 +104,7 @@ require 'rails_helper'
         visit edit_post_path(post)
         
         fill_in 'post[date]', with: Date.today
-        fill_in 'post[rationale]', with: "Edited content"
+        fill_in 'post[work_performed]', with: "Edited content"
         click_on "Save"
 
         expect(page).to have_content("Edited content")
